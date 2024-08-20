@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { TUser } from "./user.interface";
+import { TUser } from "./todo.interface";
 
 const userSchema = new Schema<TUser>({
   image: {
