@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
-import { TUser } from "./todo.interface";
+import { TCrud } from "./crud.interface";
 
-const userSchema = new Schema<TUser>({
+const crudSchema = new Schema<TCrud>({
   image: {
     type: String,
     required: true,
@@ -40,4 +40,4 @@ const userSchema = new Schema<TUser>({
 });
 
 
-export const User = model<TUser>('User', userSchema);
+export const Crud = model<TCrud>('Crud', crudSchema);

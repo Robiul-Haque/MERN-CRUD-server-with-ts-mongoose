@@ -1,4 +1,4 @@
-export type TUser = {
+export type TCrud = {
     image: File;
     name: string;
     phone?: number;
