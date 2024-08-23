@@ -1,5 +1,5 @@
 export type TCrud = {
-    image: File;
+    image: string;
     name: string;
     phone?: number;
     email?: string;

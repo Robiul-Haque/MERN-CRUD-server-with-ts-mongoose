@@ -7,6 +7,7 @@ const app: Application = express();
 
 app.use(express.json())
 app.use(cors())
+app.use("/image",express.static("./public/uploads"));
 app.use('/api/v1', router)
 
 app.get('/', (req: Request, res: Response) => {

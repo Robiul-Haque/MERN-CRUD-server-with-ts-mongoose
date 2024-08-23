@@ -5,11 +5,12 @@ const crudSchema = new Schema<TCrud>({
   image: {
     type: String,
     required: true,
-    trim: true,
-    validate: {
-      validator: (v: string) => /(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w.-]*)*\/?/.test(v),
-      message: "Invalid image URL"
-    }
+    // data: Buffer,
+    // contentType: String,
+    // validate: {
+    //   validator: (v: string) => /(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w.-]*)*\/?/.test(v),
+    //   message: "Invalid image URL"
+    // }
   },
   name: {
     type: String,
@@ -37,7 +38,7 @@ const crudSchema = new Schema<TCrud>({
     type: String,
     required: true
   }
-});
+}, { timestamps: true });
 
 
 export const Crud = model<TCrud>('Crud', crudSchema);
