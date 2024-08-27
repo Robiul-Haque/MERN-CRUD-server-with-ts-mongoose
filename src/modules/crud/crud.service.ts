@@ -3,12 +3,12 @@ import { Crud } from "./crud.model";
 import fs from 'fs';
 import path from 'path';
 
-const createCrudIntoIntoDB = async (payload: TCrud) => {
+const createCrudIntoDB = async (payload: TCrud) => {
     const result = await Crud.create(payload);
     return result;
 }
 
-const updateCrudIntoIntoDB = async (id: string, payload: TCrud) => {
+const updateCrudIntoDB = async (id: string, payload: TCrud) => {
     const data = await Crud.findById(id);
     if (data?.image) {
         fs.unlink(`public/uploads/${data?.image}`, err => {
@@ -38,7 +38,7 @@ const deleteCrudIntoDB = async (id: string) => {
 }
 
 export const crudService = {
-    createCrudIntoIntoDB,
-    updateCrudIntoIntoDB,
-    deleteCrudIntoDB
+    createCrudIntoDB,
+    updateCrudIntoDB,
+    deleteCrudIntoDB,
 }

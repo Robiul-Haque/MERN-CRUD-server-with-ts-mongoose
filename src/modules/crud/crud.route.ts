@@ -5,8 +5,8 @@ import uploadImg from "../../utils/handleUpload";
 const router = express.Router();
 
 // API endpoint for crud
-router.post("/crud/create", uploadImg.single('image'), crudController.createCrud);
-router.put("/crud/update/:id", uploadImg.single('image'), crudController.updateCrud);
-router.delete("/crud/delete/:id", crudController.deleteCrud);
+router.post("/create", uploadImg.single('image'), crudController.createCrud);
+router.put("/update/:id", uploadImg.single('image'), crudController.updateCrud);
+router.delete("/delete/:id", crudController.deleteCrud);
 
-export default router;
+export const crudRoutes = router;

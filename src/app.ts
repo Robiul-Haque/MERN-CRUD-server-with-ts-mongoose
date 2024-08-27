@@ -2,22 +2,22 @@ import express, { Application, Request, Response } from 'express';
 import notFound from './middleware/notFound';
 import globalErrorHandler from './middleware/globalErrorHandler';
 import cors from 'cors';
-import router from './modules/crud/crud.route';
+import router from './router';
 const app: Application = express();
 
-app.use(express.json())
-app.use(cors())
-app.use("/image",express.static("./public/uploads"));
-app.use('/api/v1', router)
+app.use(express.json());
+app.use(cors());
+app.use("/image", express.static("./public/uploads"));
+app.use('/api/v1', router);
 
 app.get('/', (req: Request, res: Response) => {
-    res.send('Full stack CRUD App')
-})
+    res.send('Express CRUD App')
+});
 
 // route not found
-app.use('*', notFound)
+app.use('*', notFound);
 
 // global error handler
-app.use(globalErrorHandler)
+app.use(globalErrorHandler);
 
 export default app;
