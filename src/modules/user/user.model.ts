@@ -1,7 +1,13 @@
-import { model, Schema } from "mongoose";
+import { Model, model, Schema } from "mongoose";
 import { TUser } from "./user.interface";
+import bcrypt from "bcrypt";
+import config from "../../config";
 
-const userSchema = new Schema<TUser>({
+export interface IUserModel extends Model<TUser> {
+    isPasswordMatch(email: string, password: string): Promise<TUser | null>
+}
+
+const userSchema = new Schema<TUser, IUserModel>({
     image: {
         type: String,
         required: true
@@ -26,4 +32,17 @@ const userSchema = new Schema<TUser>({
     }
 }, { timestamps: true });
 
-export const User = model<TUser>('User', userSchema);
+userSchema.pre('save', async function (next) {
+    this.password = await bcrypt.hash(
+        this.password,
+        Number(config.SALT_ROUNDS),
+    );
+    next();
+});
+
+userSchema.statics.isPasswordMatch = async function (email: string, password: string) {
+    const hashedPassIntoDB = await this.findOne({ email }).select('+password');
+    return await bcrypt.compare(String(password), String(hashedPassIntoDB?.password));
+}
+
+export const User = model<TUser, IUserModel>('User', userSchema);

@@ -1,20 +1,20 @@
 import { User } from "../user/user.model";
 import { TLoginUser } from "./auth.interface";
-import bcrypt from "bcrypt";
 
 const signInIntoDB = async (payload: TLoginUser) => {
-    const hashedPassIntoDB = await User.findOne({ $or: [{ name: payload.name }, { email: payload.email }] }).select("-_id -image -name -email -phone -createdAt -updatedAt -__v")
+    if (!payload?.email || !payload?.password) {
+        throw new Error("Name and password are required");
+    }
 
-    const isPasswordMatch = await bcrypt.compare(String(payload?.password), String(hashedPassIntoDB?.password));
+    const PasswordMatch = await User.isPasswordMatch(payload.email, payload.password);
 
-    const isUserExist = await User.findOne({
-        $or: [{ name: payload?.name }, { email: payload?.email }]
-    }).select('-_id -image -phone -password -createdAt -updatedAt -__v')
+    if (!PasswordMatch) {
+        throw new Error("Password is did not match");
+    }
 
-    if (isPasswordMatch && isUserExist !== null) {
+    if (PasswordMatch) {
+        const isUserExist = await User.findOne({ email: payload?.email }).select('-_id -image -phone -password -createdAt -updatedAt -__v');
         return isUserExist;
-    } else {
-        console.log('user is not found');
     }
 }
 
