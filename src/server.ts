@@ -6,10 +6,10 @@ let server: Server;
 
 async function main() {
     try {
-        await mongoose.connect(config.DB_URL as string);
+        await mongoose.connect(config.db_url as string);
 
-        server = app.listen(config.PORT, () => {
-            console.log(`Example app listening on port ${config.PORT}`);
+        server = app.listen(config.port, () => {
+            console.log(`Example app listening on port ${config.port}`);
         })
     } catch (error) {
         console.log(error);

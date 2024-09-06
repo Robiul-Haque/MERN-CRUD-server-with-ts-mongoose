@@ -8,5 +8,5 @@ const globalErrorHandler = (error: any, req: Request, res: Response, next: NextF
   });
 }
 
-export default globalErrorHandler
+export default globalErrorHandler;
 

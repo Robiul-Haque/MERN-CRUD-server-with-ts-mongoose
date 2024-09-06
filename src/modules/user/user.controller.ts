@@ -14,13 +14,21 @@ const signUp: RequestHandler = catchAsync(async (req: Request, res: Response) =>
         password: req.body?.password,
     }
     const result = await userService.signUpIntoDB(newUserData as TUser);
-    sendResponse(res, { statusCode: httpStatus.OK, success: true, message: "Data create successfully!", data: result });
+    sendResponse(res, { 
+        statusCode: httpStatus.OK, 
+        success: true, 
+        message: "Data create successfully!", 
+        data: result });
 });
 
 const getSingleUser: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const userEmail = req.params?.email;
     const result = await userService.getSingleUserIntoDB(userEmail);
-    sendResponse(res, { statusCode: httpStatus.OK, success: true, message: "Data featch successfully!", data: result });
+    sendResponse(res, { 
+        statusCode: httpStatus.OK, 
+        success: true, 
+        message: "Data featch successfully!", 
+        data: result });
 });
 
 export const userController = {

@@ -15,7 +15,12 @@ const createCrud: RequestHandler = catchAsync(async (req: Request, res: Response
         priority: req.body?.priority,
     }
     const result = await crudService.createCrudIntoDB(data as unknown as TCrud);
-    sendResponse(res, { statusCode: httpStatus.OK, success: true, message: "Data create successfully!", data: result })
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Data create successfully!",
+        data: result
+    })
 });
 
 const updateCrud: RequestHandler = catchAsync(async (req: Request, res: Response) => {
@@ -29,13 +34,23 @@ const updateCrud: RequestHandler = catchAsync(async (req: Request, res: Response
         priority: req.body?.priority,
     }
     const result = await crudService.updateCrudIntoDB(id, data as TCrud);
-    sendResponse(res, { statusCode: httpStatus.OK, success: true, message: "Data update successfully!", data: result });
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Data update successfully!",
+        data: result
+    });
 });
 
 const deleteCrud: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id;
     const result = await crudService.deleteCrudIntoDB(id);
-    sendResponse(res, { statusCode: httpStatus.OK, success: true, message: "Data delete successfully!", data: result });
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Data delete successfully!",
+        data: result
+    });
 });
 
 
