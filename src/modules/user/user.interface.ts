@@ -9,5 +9,7 @@ export type TUser = {
 }
 
 export interface IUserModel extends Model<TUser> {
-    isPasswordMatch(email: string, password: string): Promise<TUser | null>
+    isPasswordMatch(email: string, password: string): Promise<string | null>
+    isUserExist(email: string): Promise<string | null>
+    isTokenValid(token: string): Promise<string | null>
 }

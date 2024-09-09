@@ -28,8 +28,30 @@ const signIn = catchAsync(async (req: Request, res: Response) => {
             data: null
         });
     }
-}
-);
+});
+
+const forgetPassword = catchAsync(async (req: Request, res: Response) => {
+    const email = req.params?.email;
+    await authService.forgetPasswordWithTokenAndLink(email);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Forget password link genareted check your email!",
+        data: ""
+    })
+});
+
+const resetPassword = catchAsync(async (req: Request, res: Response) => {
+    const token = req.params?.token;
+    const newPassword = req.body?.password;
+    const result = await authService.resetPasswordWithToken(token, newPassword);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Password update successfully!",
+        data: result
+    });
+});
 
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
     const { refreshToken } = req.cookies;
@@ -44,5 +66,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
 
 export const authController = {
     signIn,
+    forgetPassword,
+    resetPassword,
     refreshToken,
 };
