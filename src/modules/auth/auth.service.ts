@@ -55,7 +55,7 @@ const forgetPasswordWithTokenAndLink = async (email: string) => {
     });
 
     if (!resetPasswordLink) {
-        console.log("Reset Password link not found!")
+        console.log("Reset password link not found!")
     }
 }
 

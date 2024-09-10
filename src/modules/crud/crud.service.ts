@@ -4,8 +4,13 @@ import fs from 'fs';
 import path from 'path';
 
 const createCrudIntoDB = async (payload: TCrud) => {
-    const result = await Crud.create(payload);
-    return result;
+    const res = await Crud.create(payload);
+    return res;
+}
+
+const getAllCrudsFromDB = async () => {
+    const res = await Crud.find();
+    return res;
 }
 
 const updateCrudIntoDB = async (id: string, payload: TCrud) => {
@@ -18,8 +23,8 @@ const updateCrudIntoDB = async (id: string, payload: TCrud) => {
         })
     }
 
-    const result = await Crud.findByIdAndUpdate(id, payload);
-    return result;
+    const res = await Crud.findByIdAndUpdate(id, payload);
+    return res;
 }
 
 const deleteCrudIntoDB = async (id: string) => {
@@ -33,12 +38,13 @@ const deleteCrudIntoDB = async (id: string) => {
         });
     }
 
-    const result = await Crud.findByIdAndDelete(id);
-    return result;
+    const res = await Crud.findByIdAndDelete(id);
+    return res;
 }
 
 export const crudService = {
     createCrudIntoDB,
+    getAllCrudsFromDB,
     updateCrudIntoDB,
     deleteCrudIntoDB,
 }

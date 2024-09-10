@@ -23,6 +23,16 @@ const createCrud: RequestHandler = catchAsync(async (req: Request, res: Response
     })
 });
 
+const getAllCruds: RequestHandler = catchAsync(async (req: Request, res: Response) => {
+    const result = await crudService.getAllCrudsFromDB();
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Data fetch successfully!",
+        data: result
+    });
+});
+
 const updateCrud: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const id = req.params?.id;
     const data = {
@@ -56,6 +66,7 @@ const deleteCrud: RequestHandler = catchAsync(async (req: Request, res: Response
 
 export const crudController = {
     createCrud,
+    getAllCruds,
     updateCrud,
     deleteCrud,
 }
