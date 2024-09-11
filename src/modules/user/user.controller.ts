@@ -4,8 +4,6 @@ import { userService } from "./user.service";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
 import { TUser } from "./user.interface";
-import fs from 'fs';
-import path from 'path';
 
 const signUp: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const newUserData = {
@@ -35,7 +33,19 @@ const getSingleUser: RequestHandler = catchAsync(async (req: Request, res: Respo
     });
 });
 
+const getSingleUserForUpdate: RequestHandler = catchAsync(async (req: Request, res: Response) => {
+    const userEmail = req.params?.email;
+    const result = await userService.getSingleUserForUpdateIntoDB(userEmail);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Data featch successfully!",
+        data: result,
+    });
+});
+
 export const userController = {
     signUp,
     getSingleUser,
+    getSingleUserForUpdate,
 }

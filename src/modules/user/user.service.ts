@@ -6,12 +6,18 @@ const signUpIntoDB = async (payload: TUser) => {
     return res;
 }
 
-const getSingleUserIntoDB = async (payload: string) => {
-    const res = await User.findOne({ email: payload });
+const getSingleUserIntoDB = async (email: string) => {
+    const res = await User.findOne({ email });
+    return res;
+}
+
+const getSingleUserForUpdateIntoDB = async (email: string) => {
+    const res = await User.findOne({ email });
     return res;
 }
 
 export const userService = {
     signUpIntoDB,
     getSingleUserIntoDB,
+    getSingleUserForUpdateIntoDB,
 }
