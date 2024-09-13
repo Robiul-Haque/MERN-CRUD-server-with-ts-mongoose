@@ -33,13 +33,19 @@ const getSingleUser: RequestHandler = catchAsync(async (req: Request, res: Respo
     });
 });
 
-const getSingleUserForUpdate: RequestHandler = catchAsync(async (req: Request, res: Response) => {
+const updateSingleUser: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const userEmail = req.params?.email;
-    const result = await userService.getSingleUserForUpdateIntoDB(userEmail);
+    console.log('From Controller: ', req.file?.filename);
+    const updateUserData = {
+        image: req.file?.filename,
+        name: req.body?.name,
+        phone: req.body?.phone,
+    }
+    const result = await userService.updateSingerUserIntoDB(userEmail, updateUserData as TUser);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: "Data featch successfully!",
+        message: "Data update successfully!",
         data: result,
     });
 });
@@ -47,5 +53,5 @@ const getSingleUserForUpdate: RequestHandler = catchAsync(async (req: Request, r
 export const userController = {
     signUp,
     getSingleUser,
-    getSingleUserForUpdate,
+    updateSingleUser,
 }

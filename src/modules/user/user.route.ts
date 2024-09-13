@@ -8,6 +8,6 @@ const router = express.Router();
 // API endpoint for user
 router.post("/signup", uploadImg.single('image'), userController.signUp);
 router.get("/get-single-user/:email", auth, userController.getSingleUser);
-router.get("/get-single-user-for-update/:email", auth, userController.getSingleUserForUpdate);
+router.put("/user-data-update/:email", auth, uploadImg.single('image'), userController.updateSingleUser);
 
 export const userRoutes = router;

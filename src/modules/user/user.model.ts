@@ -21,7 +21,7 @@ const userSchema = new Schema<TUser, IUserModel>({
         unique: true
     },
     phone: {
-        type: Number,
+        type: String,
     },
     password: {
         type: String,
