@@ -35,7 +35,6 @@ const getSingleUser: RequestHandler = catchAsync(async (req: Request, res: Respo
 
 const updateSingleUser: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const userEmail = req.params?.email;
-    console.log('From Controller: ', req.file?.filename);
     const updateUserData = {
         image: req.file?.filename,
         name: req.body?.name,
