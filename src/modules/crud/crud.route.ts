@@ -1,6 +1,6 @@
 import express from "express";
 import { crudController } from "./crud.controller";
-import uploadImg from "../../utils/handleUpload";
+import uploadImg from "../../middleware/handleUpload";
 import auth from "../../middleware/auth";
 
 const router = express.Router();

@@ -27,9 +27,11 @@ const updateSingerUserIntoDB = async (email: string, payload: TUser) => {
         })
     }
 
-    await User.findOneAndUpdate({ email }, payload);
-    const res = await User.findOne({ email });
-    return res;
+    const isUpdate = await User.findOneAndUpdate({ email }, payload);
+    if (isUpdate) {
+        const res = await User.findOne({ email });
+        return res;
+    }
 }
 
 export const userService = {

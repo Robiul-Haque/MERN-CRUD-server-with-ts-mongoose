@@ -1,5 +1,5 @@
 import express from "express";
-import uploadImg from "../../utils/handleUpload";
+import uploadImg from "../../middleware/handleUpload";
 import { userController } from "./user.controller";
 import auth from "../../middleware/auth";
 
