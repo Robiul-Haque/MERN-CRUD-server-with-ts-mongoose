@@ -11,12 +11,12 @@ const signInIntoDB = async (payload: TLoginUser) => {
     const { email, password } = payload;
 
     if (!email || !password) {
-        throw new Error("Name and password are required");
+        throw new AppError(httpStatus.NOT_FOUND, "Name and password are required");
     }
 
     const PasswordMatch = await User.isPasswordMatch(email, password);
     if (!PasswordMatch) {
-        throw new Error("Password is did not match");
+        throw new AppError(httpStatus.NOT_FOUND, "Password is did not match");
     }
 
     const accessToken = createToken({ email: payload.email || '' }, config.jwt_access_key as string, config.jwt_access_expire_in as string);
@@ -27,7 +27,7 @@ const signInIntoDB = async (payload: TLoginUser) => {
 const forgetPasswordWithTokenAndLink = async (email: string) => {
     const user = await User.isUserExist(email);
     if (!user) {
-        throw new Error('User not found');
+        throw new AppError(httpStatus.NOT_FOUND, "User not found");
     }
     // Send email with reset password link
     const accessToken = createToken({ email }, config.jwt_access_key as string, config.forget_email_jwt_access_expire_in as string);
@@ -71,7 +71,7 @@ const resetPasswordWithToken = async (token: string, password: string) => {
 
 const refreshToken = async (token: string) => {
     if (!token) {
-        throw new Error('Token not provided');
+        throw new AppError(httpStatus.NOT_FOUND, "Token not provided");
     }
     const decoded = jwt.verify(token, config.jwt_refresh_key as string) as JwtPayload;
     const { email } = decoded;

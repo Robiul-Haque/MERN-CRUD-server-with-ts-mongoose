@@ -1,6 +1,8 @@
 import multer from "multer";
 import path from 'path';
 import fs from 'fs';
+import AppError from "../errors/appError";
+import httpStatus from "http-status";
 
 const uploadPath = path.join(process.cwd(), 'public/uploads');
 // Create the uploadPath if it doesn't exist yet
@@ -27,7 +29,8 @@ const uploadImg = multer({
         if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
             cb(null, true)
         } else {
-            cb(new Error('Only JPG and PNG images are allowed.'))
+            cb(null, false);
+            throw new AppError(httpStatus.NOT_ACCEPTABLE, "Only JPG and PNG images are allowed");
         }
     }
 })
