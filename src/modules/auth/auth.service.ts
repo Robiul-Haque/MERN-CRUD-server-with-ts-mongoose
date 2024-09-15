@@ -4,6 +4,8 @@ import { TLoginUser } from "./auth.interface";
 import config from "../../config";
 import { createToken } from "./auth.utils";
 import nodemailer from "nodemailer";
+import AppError from "../../errors/appError";
+import httpStatus from "http-status";
 
 const signInIntoDB = async (payload: TLoginUser) => {
     const { email, password } = payload;
@@ -50,12 +52,12 @@ const forgetPasswordWithTokenAndLink = async (email: string) => {
     };
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-            console.log(error);
+            throw new AppError(httpStatus.NOT_FOUND, error.message);
         }
     });
 
     if (!resetPasswordLink) {
-        console.log("Reset password link not found!")
+        throw new AppError(httpStatus.NOT_FOUND, "Reset password link not found!");
     }
 }
 

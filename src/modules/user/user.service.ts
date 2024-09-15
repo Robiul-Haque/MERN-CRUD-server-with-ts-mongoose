@@ -1,3 +1,5 @@
+import httpStatus from "http-status";
+import AppError from "../../errors/appError";
 import { TUser } from "./user.interface";
 import { User } from "./user.model";
 import fs from "fs";
@@ -22,7 +24,7 @@ const updateSingerUserIntoDB = async (email: string, payload: TUser) => {
     if (data?.image) {
         fs.unlink(`public/uploads/${data?.image}`, err => {
             if (err) {
-                console.log('Error updating file:', err);
+                throw new AppError(httpStatus.NOT_FOUND, `Error updating file ${err}`);
             }
         })
     }
