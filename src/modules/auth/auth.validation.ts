@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const userSchema = z.object({
+const authSchema = z.object({
     image: z.string(),
     name: z.string(),
     email: z.string().email(),
@@ -8,6 +8,6 @@ const userSchema = z.object({
     password: z.string().min(5).max(20),
 });
 
-export const UserValidation = {
-    userSchema,
+export const authValidation = {
+    authSchema,
 }

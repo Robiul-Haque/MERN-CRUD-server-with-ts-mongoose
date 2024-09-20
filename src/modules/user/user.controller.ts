@@ -4,21 +4,26 @@ import { userService } from "./user.service";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
 import { TUser } from "./user.interface";
+import { UserValidation } from "./user.validation";
 
 const signUp: RequestHandler = catchAsync(async (req: Request, res: Response) => {
-    const newUserData = {
+    const userData = {
         image: req.file?.filename,
         name: req.body?.name,
         email: req.body?.email,
         phone: req.body?.phone,
         password: req.body?.password,
     }
-    const result = await userService.signUpIntoDB(newUserData as TUser);
+    const validateData = UserValidation.userSchema.parse(userData);
+    console.log('validate from controller', validateData);
+    // console.log('from controller', userData);
+
+    // const result = await userService.signUpIntoDB(newUserData as TUser);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
         message: "Data create successfully!",
-        data: result
+        data: 'result'
     });
 });
 
