@@ -1,11 +1,13 @@
 import { z } from "zod";
 
 const crudSchema = z.object({
-    name: z.string(),
-    phone: z.string().optional(),
-    email: z.string().email(),
-    description: z.string().min(1).max(225),
-    priority: z.enum(["High", "Medium", "Low"]),
+    body: z.object({
+        name: z.string(),
+        phone: z.string().optional(),
+        email: z.string().email(),
+        description: z.string().min(1).max(225),
+        priority: z.enum(["High", "Medium", "Low"]),
+    })
 });
 
 export const crudValidation = {

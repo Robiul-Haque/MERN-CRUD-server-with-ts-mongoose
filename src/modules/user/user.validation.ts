@@ -16,7 +16,7 @@ const updateUserSchema = z.object({
     })
 });
 
-export const UserValidation = {
+export const userValidation = {
     userSchema,
     updateUserSchema,
 }

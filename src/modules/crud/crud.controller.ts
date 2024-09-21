@@ -6,7 +6,7 @@ import sendResponse from "../../utils/sendResponse";
 import catchAsync from "../../utils/catchAsync";
 
 const createCrud: RequestHandler = catchAsync(async (req: Request, res: Response) => {
-    const data = {
+    const newCrudData = {
         image: req.file?.filename,
         name: req.body?.name,
         phone: req.body?.phone,
@@ -14,7 +14,8 @@ const createCrud: RequestHandler = catchAsync(async (req: Request, res: Response
         description: req.body?.description,
         priority: req.body?.priority,
     }
-    const result = await crudService.createCrudIntoDB(data as unknown as TCrud);
+
+    const result = await crudService.createCrudIntoDB(newCrudData as unknown as TCrud);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
@@ -35,7 +36,7 @@ const getAllCruds: RequestHandler = catchAsync(async (req: Request, res: Respons
 
 const updateCrud: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const id = req.params?.id;
-    const data = {
+    const updateCrudData = {
         image: req.file?.filename,
         name: req.body?.name,
         phone: req.body?.phone,
@@ -43,7 +44,7 @@ const updateCrud: RequestHandler = catchAsync(async (req: Request, res: Response
         description: req.body?.description,
         priority: req.body?.priority,
     }
-    const result = await crudService.updateCrudIntoDB(id, data as TCrud);
+    const result = await crudService.updateCrudIntoDB(id, updateCrudData as TCrud);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
