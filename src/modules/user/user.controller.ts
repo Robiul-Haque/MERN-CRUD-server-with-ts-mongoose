@@ -4,7 +4,6 @@ import { userService } from "./user.service";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
 import { TUser } from "./user.interface";
-import { UserValidation } from "./user.validation";
 
 const signUp: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const newUserData = {
@@ -42,6 +41,7 @@ const updateSingleUser: RequestHandler = catchAsync(async (req: Request, res: Re
         name: req.body?.name,
         phone: req.body?.phone,
     }
+
     const result = await userService.updateSingerUserIntoDB(userEmail, updateUserData as TUser);
     sendResponse(res, {
         statusCode: httpStatus.OK,

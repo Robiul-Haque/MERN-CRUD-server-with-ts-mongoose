@@ -9,6 +9,14 @@ const userSchema = z.object({
     })
 });
 
+const updateUserSchema = z.object({
+    body: z.object({
+        name: z.string(),
+        phone: z.string().optional(),
+    })
+});
+
 export const UserValidation = {
     userSchema,
+    updateUserSchema,
 }

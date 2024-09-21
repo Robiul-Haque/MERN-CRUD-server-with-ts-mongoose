@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 const crudSchema = z.object({
-    image: z.string(),
     name: z.string(),
     phone: z.string().optional(),
     email: z.string().email(),
