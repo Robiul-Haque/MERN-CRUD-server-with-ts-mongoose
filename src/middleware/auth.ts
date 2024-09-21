@@ -22,6 +22,7 @@ const auth = (role: string) => {
         if (!user) {
             throw new AppError(httpStatus.NOT_FOUND, "User not found");
         }
+
         next();
     });
 }
