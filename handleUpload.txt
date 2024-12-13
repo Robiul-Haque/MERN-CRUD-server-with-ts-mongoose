@@ -1,0 +1,22 @@
+// const storage = new CloudinaryStorage({
+//     cloudinary: cloudinary,
+//     params: async (req, file) => {
+//         const format = file.mimetype === "image/jpeg" ? "jpg" : "png";
+//         return {
+//             format: format,
+//         };
+//     },
+// });
+
+// const upload = multer({
+//     storage: storage,
+//     limits: { fileSize: 3000000 }, // 3MB
+//     fileFilter: function (req, file, cb) {
+//         if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+//             cb(null, true)
+//         } else {
+//             cb(null, false);
+//             throw new AppError(406, "Only JPG and PNG images are allowed");
+//         }
+//     }
+// })

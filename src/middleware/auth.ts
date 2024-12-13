@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt, { JwtPayload, TokenExpiredError } from 'jsonwebtoken';
 import config from "../config";
 import { User } from "../modules/user/user.model";
 import catchAsync from "../utils/catchAsync";
@@ -8,17 +8,21 @@ import httpStatus from "http-status";
 
 const auth = (role: string) => {
     // console.log(role);
-
     return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const token = req.headers.authorization;
-        if (!token) throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized");
+        
+        if (!token) throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized.....");
 
-        const { email } = jwt.verify(token, config.jwt_access_key as string) as JwtPayload;
+        try {
+            const { email } = jwt.verify(token, config.jwt_access_key as string) as JwtPayload;
 
-        const user = await User.findOne({ email });
-        if (!user) throw new AppError(httpStatus.NOT_FOUND, "User not found");
+            const user = await User.findOne({ email });
+            if (!user) throw new AppError(httpStatus.NOT_FOUND, "User not found");
 
-        next();
+            next();
+        } catch (error) {
+            if (error instanceof TokenExpiredError) throw new AppError(httpStatus.UNAUTHORIZED, "Token has expired. Please login again.");
+        }
     });
 }
 
