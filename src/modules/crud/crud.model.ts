@@ -15,14 +15,11 @@ const crudSchema = new Schema<TCrud>({
   },
   email: {
     type: String,
-    unique: true,
     lowercase: true,
     trim: true,
   },
   description: {
     type: String,
-    maxlength: 255,
-    minlength: 1,
   },
   priority: {
     type: String,

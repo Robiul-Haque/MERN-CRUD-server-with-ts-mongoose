@@ -15,6 +15,11 @@ const getAllCrudsFromDB = async () => {
     return res;
 }
 
+const getSingleCrudFromDB = async (id: string) => {
+    const res = await Crud.findById(id);
+    return res;
+}
+
 const updateCrudIntoDB = async (id: string, payload: TCrud) => {
     const data = await Crud.findById(id);
     if (data?.image) {
@@ -47,6 +52,7 @@ const deleteCrudIntoDB = async (id: string) => {
 export const crudService = {
     createCrudIntoDB,
     getAllCrudsFromDB,
+    getSingleCrudFromDB,
     updateCrudIntoDB,
     deleteCrudIntoDB,
 }

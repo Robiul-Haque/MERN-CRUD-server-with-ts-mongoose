@@ -34,6 +34,17 @@ const getAllCruds: RequestHandler = catchAsync(async (req: Request, res: Respons
     });
 });
 
+const getSingleCrud: RequestHandler = catchAsync(async (req: Request, res: Response) => {
+    const id = req.params?.id;
+    const result = await crudService.getSingleCrudFromDB(id);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Data fetch successfully!",
+        data: result
+    });
+});
+
 const updateCrud: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const id = req.params?.id;
     const updateCrudData = {
@@ -44,6 +55,7 @@ const updateCrud: RequestHandler = catchAsync(async (req: Request, res: Response
         description: req.body?.description,
         priority: req.body?.priority,
     }
+
     const result = await crudService.updateCrudIntoDB(id, updateCrudData as TCrud);
     sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -68,6 +80,7 @@ const deleteCrud: RequestHandler = catchAsync(async (req: Request, res: Response
 export const crudController = {
     createCrud,
     getAllCruds,
+    getSingleCrud,
     updateCrud,
     deleteCrud,
 }

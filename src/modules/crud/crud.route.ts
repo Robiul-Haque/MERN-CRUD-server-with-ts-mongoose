@@ -11,6 +11,7 @@ const router = express.Router();
 // API endpoint for crud
 router.post("/create", auth(""), uploadImg.single('image'), bodyParser, validateRequest(crudValidation.crudSchema), crudController.createCrud);
 router.get("/get-all", auth(""), crudController.getAllCruds);
+router.get("/get-single-crud/:id", auth(""), crudController.getSingleCrud);
 router.put("/update/:id", auth(""), uploadImg.single('image'), bodyParser, validateRequest(crudValidation.crudSchema), crudController.updateCrud);
 router.delete("/delete/:id", auth(""), crudController.deleteCrud);
 
