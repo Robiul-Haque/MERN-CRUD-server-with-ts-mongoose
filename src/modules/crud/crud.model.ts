@@ -11,7 +11,7 @@ const crudSchema = new Schema<TCrud>({
     required: true
   },
   phone: {
-    type: Number,
+    type: String,
   },
   email: {
     type: String,
