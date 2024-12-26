@@ -11,7 +11,6 @@ const router = express.Router();
 // API endpoint for user
 router.post("/signup", uploadImg.single('image'), bodyParser, validateRequest(userValidation.userSchema), userController.signUp);
 router.get("/get-single-user/:email", auth("admin"), userController.getSingleUser);
-
 router.put("/user-data-update/:email", auth("user"), uploadImg.single('image'), bodyParser, validateRequest(userValidation.updateUserSchema), userController.updateSingleUser);
 
 export const userRoutes = router;
