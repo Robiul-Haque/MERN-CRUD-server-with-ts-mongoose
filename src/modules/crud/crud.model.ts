@@ -3,8 +3,14 @@ import { TCrud } from "./crud.interface";
 
 const crudSchema = new Schema<TCrud>({
   image: {
-    type: String,
-    required: true,
+    url: {
+      type: String,
+      required: true,
+    },
+    publicId: {
+      type: String,
+      required: true,
+    }
   },
   name: {
     type: String,

@@ -6,8 +6,8 @@ import sendResponse from "../../utils/sendResponse";
 import catchAsync from "../../utils/catchAsync";
 
 const createCrud: RequestHandler = catchAsync(async (req: Request, res: Response) => {
+    const img = req.file;
     const newCrudData = {
-        image: req.file?.filename,
         name: req.body?.name,
         phone: req.body?.phone,
         email: req.body?.email,
@@ -15,7 +15,7 @@ const createCrud: RequestHandler = catchAsync(async (req: Request, res: Response
         priority: req.body?.priority,
     }
 
-    const result = await crudService.createCrudIntoDB(newCrudData as unknown as TCrud);
+    const result = await crudService.createCrudIntoDB(img, newCrudData as unknown as TCrud);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
