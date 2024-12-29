@@ -42,7 +42,7 @@ const updateSingleUser: RequestHandler = catchAsync(async (req: Request, res: Re
         phone: req.body?.phone,
     }
 
-    const result = await userService.updateSingerUserIntoDB(userEmail, updateUserData as TUser);
+    const result = await userService.updateSingleUserIntoDB(userEmail, updateUserData as TUser);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,

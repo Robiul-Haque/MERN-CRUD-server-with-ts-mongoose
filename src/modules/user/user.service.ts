@@ -14,20 +14,15 @@ const getSingleUserIntoDB = async (email: string) => {
     return res;
 }
 
-const getSingleUserForUpdateIntoDB = async (email: string) => {
-    const res = await User.findOne({ email });
-    return res;
-}
-
-const updateSingerUserIntoDB = async (email: string, payload: TUser) => {
+const updateSingleUserIntoDB = async (email: string, payload: TUser) => {
     const data = await User.findOne({ email });
-    if (data?.image) {
-        fs.unlink(`public/uploads/${data?.image}`, err => {
-            if (err) {
-                throw new AppError(httpStatus.NOT_FOUND, `Error updating file ${err}`);
-            }
-        })
-    }
+    // if (data?.image) {
+    //     fs.unlink(`public/uploads/${data?.image}`, err => {
+    //         if (err) {
+    //             throw new AppError(httpStatus.NOT_FOUND, `Error updating file ${err}`);
+    //         }
+    //     })
+    // }
 
     const isUpdate = await User.findOneAndUpdate({ email }, payload);
     if (isUpdate) {
@@ -39,6 +34,5 @@ const updateSingerUserIntoDB = async (email: string, payload: TUser) => {
 export const userService = {
     signUpIntoDB,
     getSingleUserIntoDB,
-    getSingleUserForUpdateIntoDB,
-    updateSingerUserIntoDB,
+    updateSingleUserIntoDB,
 }

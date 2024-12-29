@@ -12,5 +12,8 @@ export default {
     forget_email_jwt_access_expire_in: process.env.FORGET_EMAIL_JWT_ACCESS_EXPIRE_IN,
     jwt_refresh_key: process.env.JWT_REFRESH_KEY,
     jwt_refresh_expire_in: process.env.JWT_REFRESH_EXPIRE_IN,
-    salt_rounds: process.env.SALT_ROUNDS
+    salt_rounds: process.env.SALT_ROUNDS,
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET,
 }
