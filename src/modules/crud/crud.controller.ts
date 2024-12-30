@@ -48,7 +48,7 @@ const getSingleCrud: RequestHandler = catchAsync(async (req: Request, res: Respo
 const updateCrud: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const id = req.params?.id;
     const updateCrudData = {
-        image: req.file?.filename,
+        image: req.file,
         name: req.body?.name,
         phone: req.body?.phone,
         email: req.body?.email,
@@ -56,7 +56,7 @@ const updateCrud: RequestHandler = catchAsync(async (req: Request, res: Response
         priority: req.body?.priority,
     }
 
-    const result = await crudService.updateCrudIntoDB(id, updateCrudData as TCrud);
+    const result = await crudService.updateCrudIntoDB(id, updateCrudData as unknown as TCrud);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,

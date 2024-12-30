@@ -1,7 +1,7 @@
 export type TCrud = {
     image: {
         url: string;
-        public_id: string;
+        publicId: string;
     };
     name: string;
     phone?: string;

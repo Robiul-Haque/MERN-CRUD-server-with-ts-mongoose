@@ -18,7 +18,7 @@ const createCrudIntoDB = async (img: any, payload: TCrud) => {
 
             payload.image = {
                 url: secure_url,
-                public_id,
+                publicId: public_id,
             };
         }
         const res = await Crud.create(payload);
@@ -57,14 +57,14 @@ const updateCrudIntoDB = async (id: string, payload: TCrud) => {
 
 const deleteCrudIntoDB = async (id: string) => {
     const data = await Crud.findById(id);
-    if (data?.image) {
-        const filePath = path.join(process.cwd(), 'public/uploads', data?.image);
-        fs.unlink(filePath, err => {
-            if (err) {
-                throw new AppError(httpStatus.NOT_FOUND, `Error deleting file: ${err}`);
-            }
-        });
-    }
+    // if (data?.image) {
+    //     const filePath = path.join(process.cwd(), 'public/uploads', data?.image);
+    //     fs.unlink(filePath, err => {
+    //         if (err) {
+    //             throw new AppError(httpStatus.NOT_FOUND, `Error deleting file: ${err}`);
+    //         }
+    //     });
+    // }
 
     const res = await Crud.findByIdAndDelete(id);
     return res;
