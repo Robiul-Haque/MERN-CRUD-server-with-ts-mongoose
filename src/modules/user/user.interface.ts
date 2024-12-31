@@ -1,7 +1,10 @@
 import { Model } from "mongoose";
 
 export type TUser = {
-    image: string;
+    image: {
+        url: string;
+        publicId: string;
+    };
     name: string;
     email: string;
     phone?: string;

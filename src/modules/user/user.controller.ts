@@ -6,20 +6,15 @@ import httpStatus from "http-status";
 import { TUser } from "./user.interface";
 
 const signUp: RequestHandler = catchAsync(async (req: Request, res: Response) => {
-    const newUserData = {
-        image: req.file?.filename,
-        name: req.body?.name,
-        email: req.body?.email,
-        phone: req.body?.phone,
-        password: req.body?.password,
-    }
+    const img = req.file;
+    const newUserData = req.body;
 
-    const result = await userService.signUpIntoDB(newUserData as TUser);
+    const result = await userService.signUpIntoDB(img, newUserData as TUser);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
         message: "Data create successfully!",
-        data: 'result'
+        data: result
     });
 });
 
@@ -36,13 +31,10 @@ const getSingleUser: RequestHandler = catchAsync(async (req: Request, res: Respo
 
 const updateSingleUser: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const userEmail = req.params?.email;
-    const updateUserData = {
-        image: req.file?.filename,
-        name: req.body?.name,
-        phone: req.body?.phone,
-    }
+    const img = req.file;
+    const updateUserData = req.body;
 
-    const result = await userService.updateSingleUserIntoDB(userEmail, updateUserData as TUser);
+    const result = await userService.updateSingleUserIntoDB(userEmail, img, updateUserData as TUser);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,

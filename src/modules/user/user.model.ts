@@ -6,8 +6,14 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 
 const userSchema = new Schema<TUser, IUserModel>({
     image: {
-        type: String,
-        required: true
+        url: {
+            type: String,
+            required: true
+        },
+        publicId: {
+            type: String,
+            required: true
+        }
     },
     name: {
         type: String,
