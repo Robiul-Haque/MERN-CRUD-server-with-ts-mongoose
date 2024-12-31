@@ -1,11 +1,10 @@
-import httpStatus from "http-status";
 import { TCrud } from "./crud.interface";
 import { Crud } from "./crud.model";
-import fs from 'fs';
-import path from 'path';
 import AppError from "../../errors/appError";
 import mongoose from "mongoose";
 import { uploadImageToCloudinary } from "../../utils/handleImageToCloudinary";
+import { updateImageOnCloudinary } from "../../utils/handleUpdateImageToCloudinary";
+import { deleteImageOnCloudinary } from "../../utils/handleDeleteImageToCloudinary";
 
 const createCrudIntoDB = async (img: any, payload: TCrud) => {
     const session = await mongoose.startSession();
@@ -14,6 +13,7 @@ const createCrudIntoDB = async (img: any, payload: TCrud) => {
         if (img) {
             const imagePath = img?.path;
             const imgName = imagePath.split("/").pop()?.split(".")[0] || "";
+            // Upload image to cloudinary & database
             const { public_id, secure_url } = await uploadImageToCloudinary(imgName, imagePath) as { public_id: string, secure_url: string };
 
             payload.image = {
@@ -41,33 +41,49 @@ const getSingleCrudFromDB = async (id: string) => {
     return res;
 }
 
-const updateCrudIntoDB = async (id: string, payload: TCrud) => {
-    const data = await Crud.findById(id);
-    if (data?.image) {
-        fs.unlink(`public/uploads/${data?.image}`, err => {
-            if (err) {
-                throw new AppError(httpStatus.NOT_FOUND, `Error updating file: ${err}`);
-            }
-        })
-    }
+const updateCrudIntoDB = async (id: string, img: any, payload: TCrud) => {
+    const session = await mongoose.startSession();
+    try {
+        session.startTransaction();
+        if (img) {
+            const data = await Crud.findById(id);
+            const imagePath = img?.path;
+            const imgName = imagePath.split("/").pop()?.split(".")[0] || "";
+            // Update image from cloudinary & database
+            const { public_id, secure_url } = await updateImageOnCloudinary(imgName, imagePath, data?.image?.publicId as string) as { public_id: string, secure_url: string };
 
-    const res = await Crud.findByIdAndUpdate(id, payload);
-    return res;
+            payload.image = {
+                url: secure_url,
+                publicId: public_id
+            };
+        }
+        await Crud.findByIdAndUpdate(id, payload, { new: true });
+        const res = await Crud.findById(id);
+        return res;
+    }
+    catch (err) {
+        await session.abortTransaction();
+        await session.endSession();
+        throw new AppError(400, err as any);
+    }
 }
 
 const deleteCrudIntoDB = async (id: string) => {
-    const data = await Crud.findById(id);
-    // if (data?.image) {
-    //     const filePath = path.join(process.cwd(), 'public/uploads', data?.image);
-    //     fs.unlink(filePath, err => {
-    //         if (err) {
-    //             throw new AppError(httpStatus.NOT_FOUND, `Error deleting file: ${err}`);
-    //         }
-    //     });
-    // }
-
-    const res = await Crud.findByIdAndDelete(id);
-    return res;
+    const session = await mongoose.startSession();
+    try {
+        session.startTransaction();
+        const data = await Crud.findById(id);
+        if (!data) throw new AppError(400, "User not found!");
+        // Delete image from cloudinary & database
+        await deleteImageOnCloudinary(data?.image?.publicId as string);
+        const res = await Crud.findByIdAndDelete(id);
+        return res;
+    }
+    catch (err) {
+        await session.abortTransaction();
+        await session.endSession();
+        throw new AppError(400, err as any);
+    }
 }
 
 export const crudService = {
