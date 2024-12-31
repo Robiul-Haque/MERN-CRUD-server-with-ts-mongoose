@@ -8,9 +8,7 @@ import catchAsync from "../../utils/catchAsync";
 const createCrud: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const img = req.file;
     const newCrudData = req.body;
-
     const result = await crudService.createCrudIntoDB(img, newCrudData as unknown as TCrud);
-
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
@@ -21,7 +19,6 @@ const createCrud: RequestHandler = catchAsync(async (req: Request, res: Response
 
 const getAllCruds: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const result = await crudService.getAllCrudsFromDB();
-
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
@@ -32,9 +29,7 @@ const getAllCruds: RequestHandler = catchAsync(async (req: Request, res: Respons
 
 const getSingleCrud: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const id = req.params?.id;
-
     const result = await crudService.getSingleCrudFromDB(id);
-
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
@@ -47,9 +42,7 @@ const updateCrud: RequestHandler = catchAsync(async (req: Request, res: Response
     const id = req.params?.id;
     const img = req.file;
     const updateCrudData = req.body;
-
     const result = await crudService.updateCrudIntoDB(id, img, updateCrudData as unknown as TCrud);
-
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
@@ -60,9 +53,7 @@ const updateCrud: RequestHandler = catchAsync(async (req: Request, res: Response
 
 const deleteCrud: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id;
-
     const result = await crudService.deleteCrudIntoDB(id);
-    
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,

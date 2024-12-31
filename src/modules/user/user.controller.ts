@@ -8,7 +8,6 @@ import { TUser } from "./user.interface";
 const signUp: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const img = req.file;
     const newUserData = req.body;
-
     const result = await userService.signUpIntoDB(img, newUserData as TUser);
     sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -33,7 +32,6 @@ const updateSingleUser: RequestHandler = catchAsync(async (req: Request, res: Re
     const userEmail = req.params?.email;
     const img = req.file;
     const updateUserData = req.body;
-
     const result = await userService.updateSingleUserIntoDB(userEmail, img, updateUserData as TUser);
     sendResponse(res, {
         statusCode: httpStatus.OK,
