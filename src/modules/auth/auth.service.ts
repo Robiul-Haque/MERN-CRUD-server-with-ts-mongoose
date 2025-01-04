@@ -6,6 +6,7 @@ import { createToken } from "./auth.utils";
 import nodemailer from "nodemailer";
 import AppError from "../../errors/appError";
 import httpStatus from "http-status";
+import crypto from 'crypto';
 
 const signInIntoDB = async (payload: TLoginUser) => {
     const { email, password } = payload;
@@ -30,8 +31,11 @@ const forgetPasswordWithTokenAndLink = async (email: string) => {
         throw new AppError(httpStatus.NOT_FOUND, "User not found");
     }
     // Send email with reset password link
-    const accessToken = createToken({ email }, config.jwt_access_key as string, config.forget_email_jwt_access_expire_in as string);
-    const resetPasswordLink = `http://localhost:8000/api/v1/auth/reset-password/${accessToken}`;
+    // const accessToken = createToken({ email }, config.jwt_access_key as string, config.forget_email_jwt_access_expire_in as string);
+    // const resetPasswordLink = `http://localhost:8000/api/v1/auth/reset-password/${accessToken}`;
+
+    const otp = crypto.randomInt(100000, 999999); // Generates a 6-digit OTP
+    const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes from now
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -45,20 +49,11 @@ const forgetPasswordWithTokenAndLink = async (email: string) => {
         from: 'robiulcoc430@gmail.com',
         to: [email],
         subject: 'Crud Account Forget Password',
-        html: `
-            <h1 style="color:red; text-align:center">Reset Password</h1>
-            <p style="text-align:center">Click the following link to reset your password: <a href="${resetPasswordLink}">Reset Password</a></p>
-        `,
+        text: `Your OTP for password reset is ${otp}. It will expire in 5 minutes.`,
     };
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            throw new AppError(httpStatus.NOT_FOUND, error.message);
-        }
+    transporter.sendMail(mailOptions, function (error) {
+        if (error) throw new AppError(httpStatus.NOT_FOUND, error.message);
     });
-
-    if (!resetPasswordLink) {
-        throw new AppError(httpStatus.NOT_FOUND, "Reset password link not found!");
-    }
 }
 
 const resetPasswordWithToken = async (token: string, password: string) => {
