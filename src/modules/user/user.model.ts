@@ -32,13 +32,17 @@ const userSchema = new Schema<TUser, IUserModel>({
     password: {
         type: String,
         required: true,
+    },
+    otp: {
+        type: String,
+        default: null,
     }
 }, { timestamps: true });
 
 userSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(
         this.password,
-        Number(config.salt_rounds),
+        Number(config.salt_rounds)
     );
     next();
 });

@@ -9,6 +9,7 @@ export type TUser = {
     email: string;
     phone?: string;
     password: string;
+    otp?: string;
 }
 
 export interface IUserModel extends Model<TUser> {

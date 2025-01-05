@@ -32,19 +32,31 @@ const signIn = catchAsync(async (req: Request, res: Response) => {
 
 const forgetPassword = catchAsync(async (req: Request, res: Response) => {
     const email = req.params?.email;
-    await authService.forgetPasswordWithTokenAndLink(email);
+    await authService.forgetPasswordWithOtp(email);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: "Forget password link genareted check your email!",
+        message: "Send OTP code check your email!",
         data: ""
     })
 });
 
+const verifyOtp = catchAsync(async (req: Request, res: Response) => {
+    const email = req.body?.email;
+    const otp = req.body?.otp;
+    const result = await authService.verifyOtp(email, otp);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "OTP verified successfully",
+        data: result
+    })
+});
+
 const resetPassword = catchAsync(async (req: Request, res: Response) => {
-    const token = req.params?.token;
+    const email = req.body?.email;
     const newPassword = req.body?.password;
-    const result = await authService.resetPasswordWithToken(token, newPassword);
+    const result = await authService.resetPassword(email, newPassword);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
@@ -68,5 +80,6 @@ export const authController = {
     signIn,
     forgetPassword,
     resetPassword,
+    verifyOtp,
     refreshToken,
 };

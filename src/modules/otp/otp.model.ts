@@ -7,4 +7,4 @@ const otpSchema = new mongoose.Schema({
     isUsed: { type: Boolean, default: false },
 });
 
-export const OTP = mongoose.model("OTP", otpSchema);
+export const Otp = mongoose.model("OTP", otpSchema);
