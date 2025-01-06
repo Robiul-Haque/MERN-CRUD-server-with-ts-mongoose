@@ -44,24 +44,24 @@ const forgetPassword = catchAsync(async (req: Request, res: Response) => {
 const verifyOtp = catchAsync(async (req: Request, res: Response) => {
     const email = req.body?.email;
     const otp = req.body?.otp;
-    const result = await authService.verifyOtp(email, otp);
+    await authService.verifyOtp(email, otp);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
         message: "OTP verified successfully",
-        data: result
+        data: ""
     })
 });
 
 const resetPassword = catchAsync(async (req: Request, res: Response) => {
     const email = req.body?.email;
     const newPassword = req.body?.password;
-    const result = await authService.resetPassword(email, newPassword);
+    await authService.resetPassword(email, newPassword);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
         message: "Password update successfully!",
-        data: result
+        data: ""
     });
 });
 

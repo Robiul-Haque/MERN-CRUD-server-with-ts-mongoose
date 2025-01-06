@@ -16,8 +16,25 @@ const signInIntoDB = async (payload: TLoginUser) => {
         throw new AppError(httpStatus.NOT_FOUND, "Name and password are required");
     }
 
-    const PasswordMatch = await User.isPasswordMatch(email, password);
-    if (!PasswordMatch) {
+    // const passwordMatch = await User.isPasswordMatch(email, password);
+    // console.log("Service: ", password, passwordMatch);
+    // if (!passwordMatch) {
+    //     throw new AppError(httpStatus.NOT_FOUND, "Password is did not match");
+    // }
+
+    const hashedPassIntoDB = await User.findOne({ email }).select('+password');
+    // console.log(hashedPassIntoDB?.password);
+    const passwordMatch = await new Promise((resolve, reject) => {
+        bcrypt.compare(password, String(hashedPassIntoDB?.password), (err, result) => {
+            if (err) reject(err);
+            resolve(result);
+        });
+    });
+    console.log("Stored Hash:", hashedPassIntoDB?.password);
+    console.log("Plain Password:", password);
+    console.log("Res form bcrypt: ", passwordMatch);
+
+    if (!passwordMatch) {
         throw new AppError(httpStatus.NOT_FOUND, "Password is did not match");
     }
 
@@ -54,7 +71,7 @@ const forgetPasswordWithOtp = async (email: string) => {
         from: 'robiulcoc430@gmail.com',
         to: [email],
         subject: 'Forget Your Password',
-        text: `Your OTP for password reset is ${otp}. It will expire in 5 minutes.`,
+        text: `Your OTP code ${otp}.`,
     };
     transporter.sendMail(mailOptions, function (error) {
         if (error) throw new AppError(httpStatus.NOT_FOUND, error.message);
@@ -77,8 +94,6 @@ const verifyOtp = async (email: string, otp: string) => {
     // Delete OTP from DB
     await User.findOneAndUpdate({ email }, { otp: null });
 
-    return true;
-
     // await bcrypt.hash(this.password,Number(config.salt_rounds));
 
     // const verifyOtp = await Otp.findOne({ userId: user._id });
@@ -96,10 +111,10 @@ const resetPassword = async (email: string, newPassword: string) => {
     }
 
     const hashedNewPasswword = await bcrypt.hash(newPassword, Number(config.salt_rounds));
+    console.log(hashedNewPasswword);
 
     // Update password in DB
-    await User.findOneAndUpdate({ email }, { password: hashedNewPasswword }, { new: true, runValidators: true });
-    return true;
+    await User.findOneAndUpdate({ email }, { password: hashedNewPasswword });
 }
 
 const refreshToken = async (token: string) => {

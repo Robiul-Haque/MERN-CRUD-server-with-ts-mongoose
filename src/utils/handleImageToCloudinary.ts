@@ -1,5 +1,7 @@
 import { UploadApiResponse, v2 as cloudinary } from 'cloudinary';
 import config from "../config";
+import AppError from '../errors/appError';
+import httpStatus from 'http-status';
 
 // Cloudinary configration
 cloudinary.config({

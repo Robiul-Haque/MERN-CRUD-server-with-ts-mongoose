@@ -40,33 +40,31 @@ const userSchema = new Schema<TUser, IUserModel>({
 }, { timestamps: true });
 
 userSchema.pre('save', async function (next) {
-    this.password = await bcrypt.hash(
-        this.password,
-        Number(config.salt_rounds)
-    );
+    this.password = await bcrypt.hash(this.password, Number(config.salt_rounds));
     next();
 });
 
 userSchema.statics.isPasswordMatch = async function (email: string, password: string) {
     const hashedPassIntoDB = await this.findOne({ email }).select('+password');
-    return await bcrypt.compare(String(password), String(hashedPassIntoDB?.password));
+    console.log(hashedPassIntoDB?.password);
+    return bcrypt.compare(String(password), String(hashedPassIntoDB?.password), (err, result) => console.log("Model: ", err, result));
 }
 
 userSchema.statics.isUserExist = async function (email: string) {
     return await this.findOne({ email });
 }
 
-userSchema.pre('findOneAndUpdate', async function (next) {
-    const update = this.getUpdate() as any;
-    if (update && update.password) {
-        update.password = await bcrypt.hash(
-            update.password,
-            Number(config.salt_rounds),
-        );
-        this.setUpdate(update);
-    }
-    next();
-});
+// userSchema.pre('findOneAndUpdate', async function (next) {
+//     const update = this.getUpdate() as any;
+//     if (update && update.password) {
+//         update.password = await bcrypt.hash(
+//             update.password,
+//             Number(config.salt_rounds),
+//         );
+//         this.setUpdate(update);
+//     }
+//     next();
+// });
 
 userSchema.statics.isTokenValid = function (token: string) {
     const { email } = jwt.verify(token, config.jwt_access_key as string) as JwtPayload;
