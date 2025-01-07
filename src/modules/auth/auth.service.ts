@@ -103,19 +103,3 @@ export const authService = {
     resetPassword,
     refreshToken,
 }
-
-// Check if OTP is correct and not expired
-// if (verifyOtp?.otp === otp && verifyOtp?.expiresAt.getTime() > Date.now()) {
-//     console.log(verifyOtp?.expiresAt.getTime() > Date.now());
-// } else {
-//     throw new AppError(httpStatus.NOT_FOUND, "Invalid OTP or OTP expired");
-// }
-// // Delete OTP from DB after verification
-// await Otp.deleteOne({ userId: user._id });
-// // Save new password in DB
-// await User.findOneAndUpdate({ email }, { password: bcrypt.hashSync(newPassword, 10) });
-// // Generate new JWT tokens
-// const accessToken = createToken({ email: user.email || '' }, config.jwt_access_key as string, config.jwt_access_expire_in as string);
-// const refreshToken = createToken({ email: user.email || '' }, config.jwt_refresh_key as string, config.jwt_refresh_expire_in as string);
-// return { accessToken, refreshToken };
-// // return { accessToken, refreshToken };

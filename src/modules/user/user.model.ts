@@ -54,18 +54,6 @@ userSchema.statics.isUserExist = async function (email: string) {
     return await this.findOne({ email });
 }
 
-// userSchema.pre('findOneAndUpdate', async function (next) {
-//     const update = this.getUpdate() as any;
-//     if (update && update.password) {
-//         update.password = await bcrypt.hash(
-//             update.password,
-//             Number(config.salt_rounds),
-//         );
-//         this.setUpdate(update);
-//     }
-//     next();
-// });
-
 userSchema.statics.isTokenValid = function (token: string) {
     const { email } = jwt.verify(token, config.jwt_access_key as string) as JwtPayload;
     return email;
