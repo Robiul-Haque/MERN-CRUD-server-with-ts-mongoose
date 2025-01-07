@@ -16,24 +16,7 @@ const signInIntoDB = async (payload: TLoginUser) => {
         throw new AppError(httpStatus.NOT_FOUND, "Name and password are required");
     }
 
-    // const passwordMatch = await User.isPasswordMatch(email, password);
-    // console.log("Service: ", password, passwordMatch);
-    // if (!passwordMatch) {
-    //     throw new AppError(httpStatus.NOT_FOUND, "Password is did not match");
-    // }
-
-    const hashedPassIntoDB = await User.findOne({ email }).select('+password');
-    // console.log(hashedPassIntoDB?.password);
-    const passwordMatch = await new Promise((resolve, reject) => {
-        bcrypt.compare(password, String(hashedPassIntoDB?.password), (err, result) => {
-            if (err) reject(err);
-            resolve(result);
-        });
-    });
-    console.log("Stored Hash:", hashedPassIntoDB?.password);
-    console.log("Plain Password:", password);
-    console.log("Res form bcrypt: ", passwordMatch);
-
+    const passwordMatch = await User.isPasswordMatch(email, password);
     if (!passwordMatch) {
         throw new AppError(httpStatus.NOT_FOUND, "Password is did not match");
     }
@@ -43,6 +26,7 @@ const signInIntoDB = async (payload: TLoginUser) => {
 
     return { accessToken, refreshToken };
 }
+
 const forgetPasswordWithOtp = async (email: string) => {
     const user = await User.findOne({ email });
     if (!user) {
@@ -50,25 +34,19 @@ const forgetPasswordWithOtp = async (email: string) => {
     }
 
     const otp = crypto.randomInt(100000, 999999); // Generates a 6-digit OTP
-    // const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes from now
-
-    // Delete all previous OTPs for same user
-    // await Otp.deleteOne({ userId: user._id });
-
-    // Save OTP in DB
-    // await Otp.create({ userId: user._id, otp, expiresAt, isUsed: false });
 
     // Send email with OTP code
     const transporter = nodemailer.createTransport({
-        service: 'gmail',
+        service: config.email_service,
+        host: config.email_host,
         auth: {
-            user: 'robiulcoc430@gmail.com',
-            pass: 'drjb amtw zvso ylgi',
+            user: config.email_user,
+            pass: config.email_password,
         },
     });
 
     const mailOptions = {
-        from: 'robiulcoc430@gmail.com',
+        from: config.email,
         to: [email],
         subject: 'Forget Your Password',
         text: `Your OTP code ${otp}.`,
@@ -93,15 +71,6 @@ const verifyOtp = async (email: string, otp: string) => {
 
     // Delete OTP from DB
     await User.findOneAndUpdate({ email }, { otp: null });
-
-    // await bcrypt.hash(this.password,Number(config.salt_rounds));
-
-    // const verifyOtp = await Otp.findOne({ userId: user._id });
-    // console.log("Verifying: ", verifyOtp);
-
-    // if (verifyOtp?.otp === otp && verifyOtp?.expiresAt.getTime() < Date.now()) {
-    //     console.log(verifyOtp?.expiresAt.getTime() < Date.now());
-    // }
 }
 
 const resetPassword = async (email: string, newPassword: string) => {
@@ -111,7 +80,6 @@ const resetPassword = async (email: string, newPassword: string) => {
     }
 
     const hashedNewPasswword = await bcrypt.hash(newPassword, Number(config.salt_rounds));
-    console.log(hashedNewPasswword);
 
     // Update password in DB
     await User.findOneAndUpdate({ email }, { password: hashedNewPasswword });
@@ -135,6 +103,7 @@ export const authService = {
     resetPassword,
     refreshToken,
 }
+
 // Check if OTP is correct and not expired
 // if (verifyOtp?.otp === otp && verifyOtp?.expiresAt.getTime() > Date.now()) {
 //     console.log(verifyOtp?.expiresAt.getTime() > Date.now());
