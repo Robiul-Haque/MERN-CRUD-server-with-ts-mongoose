@@ -49,7 +49,7 @@ const forgetPasswordWithOtp = async (email: string) => {
         from: config.email,
         to: [email],
         subject: 'Forget Your Password',
-        text: `Your OTP code ${otp}.`,
+        text: `Your OTP code ${otp}`,
     };
     transporter.sendMail(mailOptions, function (error) {
         if (error) throw new AppError(httpStatus.NOT_FOUND, error.message);
