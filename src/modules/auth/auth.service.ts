@@ -30,7 +30,7 @@ const signInIntoDB = async (payload: TLoginUser) => {
 const forgetPasswordWithOtp = async (email: string) => {
     const user = await User.findOne({ email });
     if (!user) {
-        throw new AppError(httpStatus.NOT_FOUND, "User not found");
+        throw new AppError(httpStatus.NOT_FOUND, "Account not found");
     }
 
     const otp = crypto.randomInt(100000, 999999); // Generates a 6-digit OTP
@@ -56,7 +56,8 @@ const forgetPasswordWithOtp = async (email: string) => {
     });
 
     // Save OTP in DB
-    await User.findOneAndUpdate({ email }, { otp });
+    const res = await User.findOneAndUpdate({ email }, { otp }, { new: true }).select("email -_id");
+    return res;
 }
 
 const verifyOtp = async (email: string, otp: string) => {

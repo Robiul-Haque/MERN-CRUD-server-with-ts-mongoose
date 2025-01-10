@@ -32,13 +32,13 @@ const signIn = catchAsync(async (req: Request, res: Response) => {
 
 const forgetPassword = catchAsync(async (req: Request, res: Response) => {
     const email = req.params?.email;
-    await authService.forgetPasswordWithOtp(email);
+    const result = await authService.forgetPasswordWithOtp(email);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
         message: "Send OTP code check your email!",
-        data: ""
-    })
+        data: result
+    });
 });
 
 const verifyOtp = catchAsync(async (req: Request, res: Response) => {
@@ -50,7 +50,7 @@ const verifyOtp = catchAsync(async (req: Request, res: Response) => {
         success: true,
         message: "OTP verified successfully",
         data: ""
-    })
+    });
 });
 
 const resetPassword = catchAsync(async (req: Request, res: Response) => {
@@ -73,7 +73,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
         success: true,
         message: "Access token is retrieved successfully!",
         data: result
-    })
+    });
 });
 
 export const authController = {
