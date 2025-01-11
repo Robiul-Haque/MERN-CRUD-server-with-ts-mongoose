@@ -46,8 +46,7 @@ userSchema.pre('save', async function (next) {
 
 userSchema.statics.isPasswordMatch = async function (email: string, password: string) {
     const hashedPassIntoDB = await this.findOne({ email }).select('+password');
-    console.log(hashedPassIntoDB?.password);
-    return bcrypt.compare(String(password), String(hashedPassIntoDB?.password), (err, result) => console.log("Model: ", err, result));
+    return bcrypt.compare(String(password), String(hashedPassIntoDB?.password));
 }
 
 userSchema.statics.isUserExist = async function (email: string) {
