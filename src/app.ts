@@ -3,17 +3,17 @@ import notFound from './middleware/notFound';
 import globalErrorHandler from './middleware/globalErrorHandler';
 import cors from 'cors';
 import router from './router';
-const app: Application = express();
 import cookieParser from 'cookie-parser';
+const app: Application = express();
 
 app.use(express.json());
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(cors({ origin: ["http://localhost:5173", "https://mern-crud-123.netlify.app"], credentials: true }));
 app.use(cookieParser());
 app.use("/image", express.static("./public/uploads"));
 app.use('/api/v1', router);
 
 app.get('/', (req: Request, res: Response) => {
-    res.send('Express CRUD App')
+    res.send('CRUD server is running');
 });
 
 // route not found
