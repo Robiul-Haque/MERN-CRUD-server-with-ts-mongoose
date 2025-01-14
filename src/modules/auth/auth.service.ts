@@ -39,6 +39,8 @@ const forgetPasswordWithOtp = async (email: string) => {
     const transporter = nodemailer.createTransport({
         service: config.email_service,
         host: config.email_host,
+        port: 465,
+        secure: true,
         auth: {
             user: config.email_user,
             pass: config.email_password,
