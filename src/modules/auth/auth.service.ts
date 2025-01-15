@@ -28,6 +28,7 @@ const signInIntoDB = async (payload: TLoginUser) => {
 }
 
 const forgetPasswordWithOtp = async (email: string) => {
+    console.log(email)
     const user = await User.findOne({ email });
     if (!user) {
         throw new AppError(httpStatus.NOT_FOUND, "Account not found");
@@ -39,8 +40,6 @@ const forgetPasswordWithOtp = async (email: string) => {
     const transporter = nodemailer.createTransport({
         service: config.email_service,
         host: config.email_host,
-        port: 465,
-        secure: true,
         auth: {
             user: config.email_user,
             pass: config.email_password,
@@ -53,9 +52,29 @@ const forgetPasswordWithOtp = async (email: string) => {
         subject: 'Forget Your Password',
         text: `Your OTP code ${otp}`,
     };
-    transporter.sendMail(mailOptions, function (error) {
-        if (error) throw new AppError(httpStatus.NOT_FOUND, error.message);
-    });
+
+    try {
+        // Verify connection configuration
+        await new Promise((resolve, reject) => {
+            transporter.verify((error, success) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(success);
+                }
+            });
+        });
+
+        //  Send mail
+        await new Promise((resolve, reject) => {
+            transporter.sendMail(mailOptions, function (error) {
+                if (error) reject(new AppError(httpStatus.INTERNAL_SERVER_ERROR, error.message));
+                resolve(undefined);
+            });
+        })
+    } catch (error) {
+        throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, "Failed to send email");
+    }
 
     // Save OTP in DB
     const res = await User.findOneAndUpdate({ email }, { otp }, { new: true }).select("email -_id");
