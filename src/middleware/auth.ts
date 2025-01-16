@@ -7,7 +7,6 @@ import AppError from "../errors/appError";
 import httpStatus from "http-status";
 
 const auth = (role: string) => {
-    // console.log(role);
     return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const token = req.headers.authorization;
         

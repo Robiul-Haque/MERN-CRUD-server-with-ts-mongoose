@@ -1,5 +1,6 @@
 import { Model } from "mongoose";
 
+// Define the TypeScript type for a User object.
 export type TUser = {
     image: {
         url: string;
