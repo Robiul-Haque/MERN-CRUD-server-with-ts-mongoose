@@ -5,6 +5,7 @@ import httpStatus from "http-status";
 import sendResponse from "../../utils/sendResponse";
 import catchAsync from "../../utils/catchAsync";
 
+// Handles the creation of a new resource.
 const createCrud: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const img = req.file;
     const newCrudData = req.body;
@@ -17,6 +18,7 @@ const createCrud: RequestHandler = catchAsync(async (req: Request, res: Response
     })
 });
 
+// Retrieves all resources.
 const getAllCruds: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const result = await crudService.getAllCrudsFromDB();
     sendResponse(res, {
@@ -27,6 +29,7 @@ const getAllCruds: RequestHandler = catchAsync(async (req: Request, res: Respons
     });
 });
 
+// Retrieves a single resource by ID.
 const getSingleCrud: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const id = req.params?.id;
     const result = await crudService.getSingleCrudFromDB(id);
@@ -38,6 +41,7 @@ const getSingleCrud: RequestHandler = catchAsync(async (req: Request, res: Respo
     });
 });
 
+// Updates an existing resource by ID.
 const updateCrud: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const id = req.params?.id;
     const img = req.file;
@@ -51,6 +55,7 @@ const updateCrud: RequestHandler = catchAsync(async (req: Request, res: Response
     });
 });
 
+// Deletes a resource by ID.
 const deleteCrud: RequestHandler = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id;
     const result = await crudService.deleteCrudIntoDB(id);

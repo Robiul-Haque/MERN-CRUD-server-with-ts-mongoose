@@ -1,5 +1,7 @@
 import { Response } from "express";
 
+// Defining a generic type TApiResponse that represents the structure of an API response
+// T represents the type of data being returned in the response
 type TApiResponse<T> = {
     statusCode: number;
     success: boolean;
@@ -7,6 +9,7 @@ type TApiResponse<T> = {
     data: T;
 }
 
+// Function to send a response to the client
 const sendResponse = <T>(res: Response, { statusCode, success, message, data }: TApiResponse<T>) => {
     res.status(statusCode).json({
         success,

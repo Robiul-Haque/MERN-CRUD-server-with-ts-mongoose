@@ -6,6 +6,7 @@ import catchAsync from "../utils/catchAsync";
 import AppError from "../errors/appError";
 import httpStatus from "http-status";
 
+// Middleware to handle token authentication
 const auth = (role: string) => {
     return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const token = req.headers.authorization;

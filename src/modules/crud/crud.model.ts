@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
 import { TCrud } from "./crud.interface";
 
+// Define the schema for the "Crud" model
 const crudSchema = new Schema<TCrud>({
   image: {
     url: {

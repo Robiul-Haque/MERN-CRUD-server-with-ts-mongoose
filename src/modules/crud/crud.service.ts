@@ -6,14 +6,16 @@ import { uploadImageToCloudinary } from "../../utils/handleImageToCloudinary";
 import { updateImageOnCloudinary } from "../../utils/handleUpdateImageToCloudinary";
 import { deleteImageOnCloudinary } from "../../utils/handleDeleteImageToCloudinary";
 
+// Service to create a new CRUD record in the database
 const createCrudIntoDB = async (img: any, payload: TCrud) => {
     const session = await mongoose.startSession();
     try {
         session.startTransaction();
+
         if (img) {
             const imagePath = img?.path;
             const imgName = imagePath.split("/").pop()?.split(".")[0] || "";
-            // Upload image to cloudinary & database
+            // Upload the image to Cloudinary and store the URL and public ID
             const { public_id, secure_url } = await uploadImageToCloudinary(imgName, imagePath) as { public_id: string, secure_url: string };
 
             payload.image = {
@@ -25,31 +27,36 @@ const createCrudIntoDB = async (img: any, payload: TCrud) => {
         return res;
     }
     catch (err) {
+        // Rollback transaction in case of an error
         await session.abortTransaction();
         await session.endSession();
         throw new AppError(400, err as any);
     }
 }
 
+// Service to fetch all CRUD records from the database
 const getAllCrudsFromDB = async () => {
     const res = await Crud.find();
     return res;
 }
 
+// Service to fetch a single CRUD record by its ID
 const getSingleCrudFromDB = async (id: string) => {
     const res = await Crud.findById(id);
     return res;
 }
 
+// Service to update an existing CRUD record in the database
 const updateCrudIntoDB = async (id: string, img: any, payload: TCrud) => {
     const session = await mongoose.startSession();
     try {
         session.startTransaction();
+
         if (img) {
             const data = await Crud.findById(id);
             const imagePath = img?.path;
             const imgName = imagePath.split("/").pop()?.split(".")[0] || "";
-            // Update image from cloudinary & database
+            // Update the image on Cloudinary and get the new URL and public ID & save database
             const { public_id, secure_url } = await updateImageOnCloudinary(imgName, imagePath, data?.image?.publicId as string) as { public_id: string, secure_url: string };
 
             payload.image = {
@@ -62,12 +69,14 @@ const updateCrudIntoDB = async (id: string, img: any, payload: TCrud) => {
         return res;
     }
     catch (err) {
+        // Rollback transaction in case of an error
         await session.abortTransaction();
         await session.endSession();
         throw new AppError(400, err as any);
     }
 }
 
+// Service to delete a CRUD record from the database
 const deleteCrudIntoDB = async (id: string) => {
     const session = await mongoose.startSession();
     try {
@@ -80,6 +89,7 @@ const deleteCrudIntoDB = async (id: string) => {
         return res;
     }
     catch (err) {
+        // Rollback transaction in case of an error
         await session.abortTransaction();
         await session.endSession();
         throw new AppError(400, err as any);

@@ -1,3 +1,4 @@
+// Custom error class for handling application-specific errors
 class AppError extends Error {
     public statusCode: number;
 
