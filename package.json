@@ -1,5 +1,5 @@
 {
-  "name": "express",
+  "name": "crud-backend-app",
   "version": "1.0.0",
   "main": "index.js",
   "proxy": "https://mern-crud-123.netlify.app",
