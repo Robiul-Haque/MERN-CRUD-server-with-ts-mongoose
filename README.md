@@ -89,20 +89,20 @@ Create a <b>.env</b> file in the root directory and add the following:
 NODE_ENV = development <br/>
 PORT = 8000 <br/>
 DATABASE_URL = <br/>
-JWT_ACCESS_KEY = 
-JWT_ACCESS_EXPIRE_IN = 10m
-FORGET_EMAIL_JWT_ACCESS_EXPIRE_IN = 5m
-JWT_REFRESH_KEY = 
-JWT_REFRESH_EXPIRE_IN = 10d
-SALT_ROUNDS = 10
-CLOUD_NAME = 
-API_KEY = 
-API_SECRET = 
-SERVICE = gmail
-HOST = smpt.gmail.com
-USER = 
-PASSWORD = 
-EMAIL = 
+JWT_ACCESS_KEY = <br/>
+JWT_ACCESS_EXPIRE_IN = 10m <br/>
+FORGET_EMAIL_JWT_ACCESS_EXPIRE_IN = 5m <br/>
+JWT_REFRESH_KEY = <br/>
+JWT_REFRESH_EXPIRE_IN = 10d <br/>
+SALT_ROUNDS = 10 <br/>
+CLOUD_NAME = <br/>
+API_KEY = <br/>
+API_SECRET = <br/>
+SERVICE = gmail <br/>
+HOST = smpt.gmail.com <br/>
+USER = <br/>
+PASSWORD = <br/>
+EMAIL = <br/>
 
 Run the development server:
 <b>npm run start:dev</b>
