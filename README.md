@@ -86,9 +86,9 @@ yarn install
 Configure environment variables:
 Create a <b>.env</b> file in the root directory and add the following:
 
-NODE_ENV = development
-PORT = 8000
-DATABASE_URL = 
+NODE_ENV = development <br/>
+PORT = 8000 <br/>
+DATABASE_URL = <br/>
 JWT_ACCESS_KEY = 
 JWT_ACCESS_EXPIRE_IN = 10m
 FORGET_EMAIL_JWT_ACCESS_EXPIRE_IN = 5m
